@@ -1,0 +1,20 @@
+{
+  "name": "planner-app",
+  "version": "1.0.0",
+  "description": "Planner app",
+  "scripts": {
+    "build:back": "docker-compose build server",
+    "build:front": "docker-compose build client",
+    "start:db": "docker-compose up database",
+    "start:back": "docker-compose up client --renew-anon-volumes",
+    "start:front": "docker-compose up server --renew-anon-volumes",
+    "clean": "docker-compose down -v"
+  },
+  "author": "Oleksii Tverdohlib",
+  "license": "ISC",
+  "devDependencies": {
+    "run-script-webpack-plugin": "^0.2.0",
+    "webpack": "^5.97.1",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

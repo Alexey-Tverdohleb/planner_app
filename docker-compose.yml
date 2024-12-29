@@ -1,0 +1,71 @@
+version: '3.8'
+
+networks:
+  default:
+
+services:
+  database:
+    # NOTE: Uncomment the line below if you are using Mac with m1/m2 chip
+    platform: linux/x86_64
+    container_name:  database
+    image: mysql:5.7
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    #command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQLDB_PASSWORD}
+    ports:
+      - ${MYSQLDB_LOCAL_PORT}:${MYSQLDB_DOCKER_PORT}
+    volumes:
+      - db-volume:/var/lib/mysql:rw
+      - ./planner-db:/docker-entrypoint-initdb.d/
+    networks:
+      - default
+
+  server:
+    container_name: server
+    depends_on:
+      - database
+    build: ./planner-server
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - ${SERVER_LOCAL_PORT}:${SERVER_DOCKER_PORT}
+    environment:
+      - DB_HOST=${MYSQLDB_HOST}
+      - DB_USER=${MYSQLDB_USER}
+      - DB_PASSWORD=${MYSQLDB_PASSWORD}
+      - DB_DATABASE=${MYSQLDB_DATABASE}
+      - DB_PORT=${MYSQLDB_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./planner-server:/app
+      - /app/node_modules
+    networks:
+      - default
+
+  client:
+    container_name: client
+      # depends_on:
+    # - nestjs-app
+    build:
+      context: ./planner-client
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - ${CLIENT_LOCAL_PORT}:${CLIENT_DOCKER_PORT}
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./planner-client:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - default
+
+volumes:
+  db-volume:
