@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 declare const module: any;
 
@@ -9,9 +10,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS so we can access the application from a different origin
-  app.enableCors();
+  app.enableCors({
+    origin: `http://localhost:${process.env.CLIENT_LOCAL_PORT}`,
+  });
 
   app.setGlobalPrefix('api');
+
+  app.use(cookieParser());
 
   // Start the application
   await app.listen(port).then((_value) => {
