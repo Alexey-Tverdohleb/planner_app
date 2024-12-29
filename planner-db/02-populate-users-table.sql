@@ -1,3 +1,0 @@
-USE PLANNER_APP;
-INSERT INTO users VALUES(1, "Test");
-INSERT INTO users VALUES(2, "Test");

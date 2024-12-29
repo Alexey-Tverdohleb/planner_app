@@ -4,17 +4,18 @@ import { AppModule } from './app.module';
 declare const module: any;
 
 async function bootstrap() {
-
-  const port = process.env.SERVER_DOCKER_PORT
+  const port = process.env.SERVER_DOCKER_PORT;
 
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS so we can access the application from a different origin
-  app.enableCors()
+  app.enableCors();
+
+  app.setGlobalPrefix('api');
 
   // Start the application
   await app.listen(port).then((_value) => {
-    console.log(`Server started at http://localhost:${port}`)
+    console.log(`Server started at http://localhost:${port}`);
   });
 
   // This is necessary to make the hot-reload work with Docker
