@@ -22,6 +22,9 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  password: string;
+
   @Column({ name: 'work_interval', default: 50 })
   workInterval: number;
 
