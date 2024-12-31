@@ -88,6 +88,6 @@ export class UserService {
       .where('id = :id', { id })
       .execute();
 
-    return await this.userRepository.findOne({ where: { id } });
+    return this.userRepository.findOne({ where: { id } });
   }
 }

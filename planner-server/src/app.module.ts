@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { TaskModule } from '@/src/task/task.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     DatabaseModule,
     AuthModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
