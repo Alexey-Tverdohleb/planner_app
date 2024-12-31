@@ -7,6 +7,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { TaskModule } from '@/src/task/task.module';
 import { TimeBlockModule } from '@/src/time-block/time-block.module';
+import { TimerModule } from '@/src/timer/timer.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TimeBlockModule } from '@/src/time-block/time-block.module';
     AuthModule,
     TaskModule,
     TimeBlockModule,
+    TimerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
