@@ -30,8 +30,8 @@ export class TaskController {
 
   @Get(':id')
   @Auth()
-  async getOne(@Param('id') id: number) {
-    return this.taskService.getOne(id);
+  async getOne(@CurrentUser('id') userId: number, @Param('id') id: number) {
+    return this.taskService.getOne(id, userId);
   }
 
   @UsePipes(new ValidationPipe())
@@ -46,14 +46,18 @@ export class TaskController {
   @HttpCode(HttpStatus.OK)
   @Patch(':id')
   @Auth()
-  async update(@Body() dto: TaskDto, @Param('id') id: number) {
-    return this.taskService.update(dto, id);
+  async update(
+    @CurrentUser('id') userId: number,
+    @Body() dto: TaskDto,
+    @Param('id') id: number,
+  ) {
+    return this.taskService.update(dto, id, userId);
   }
 
   @HttpCode(HttpStatus.OK)
   @Delete(':id')
   @Auth()
-  async delete(@Param('id') id: number) {
-    return this.taskService.delete(id);
+  async delete(@CurrentUser('id') userId: number, @Param('id') id: number) {
+    return this.taskService.delete(id, userId);
   }
 }

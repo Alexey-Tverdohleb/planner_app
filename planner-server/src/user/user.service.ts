@@ -16,7 +16,7 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
   ) {}
-  async getById(id: number) {
+  async getById(id: number): Promise<User | null> {
     return this.userRepository.findOneBy({ id });
   }
 

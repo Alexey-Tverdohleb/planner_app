@@ -20,21 +20,27 @@ export class TaskService {
     });
   }
 
-  async getOne(id: number): Promise<Task> {
-    return this.TaskRepository.findOne({ where: { id } });
+  async getOne(id: number, userId: number): Promise<Task> {
+    return this.TaskRepository.findOne({ where: { id, user: { id: userId } } });
   }
 
   async create(dto: TaskDto, user: User): Promise<Task> {
     return this.TaskRepository.save({ ...dto, user });
   }
 
-  async update(dto: Partial<TaskDto>, taskId: number): Promise<Task> {
-    await this.TaskRepository.update({ id: taskId }, dto);
+  async update(
+    dto: Partial<TaskDto>,
+    taskId: number,
+    userId: number,
+  ): Promise<Task> {
+    await this.TaskRepository.update({ id: taskId, user: { id: userId } }, dto);
 
-    return this.getOne(taskId);
+    return this.getOne(taskId, userId);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
-    return this.TaskRepository.delete({ id });
+  async delete(id: number, userId: number): Promise<number> {
+    await this.TaskRepository.delete({ id, user: { id: userId } });
+
+    return id;
   }
 }
