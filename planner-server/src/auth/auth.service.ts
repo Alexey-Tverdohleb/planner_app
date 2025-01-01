@@ -60,6 +60,7 @@ export class AuthService {
     }
 
     const isValid = await verify(user.password, dto.password);
+
     if (!isValid) {
       throw new UnauthorizedException();
     }
